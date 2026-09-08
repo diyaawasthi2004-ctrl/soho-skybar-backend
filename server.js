@@ -26,6 +26,10 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // API Routes
+app.get('/', (req, res) => {
+  res.send('Soho Skybar Backend is live!');
+});
+
 app.post('/api/reservations', async (req, res) => {
   try {
     const { fullName, phone, date, timeSlot, guests, seatingZone, notes } = req.body;
@@ -34,7 +38,7 @@ app.post('/api/reservations', async (req, res) => {
     res.status(201).json({ success: true, message: 'Reservation saved successfully!' });
   } catch (error) {
     console.error('Detailed reservation error:', error.message);
-    res.status(500).json({ success: false, message: error.message }); // Sends exact error to frontend
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
@@ -64,6 +68,7 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
+// Single app.listen at the bottom
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
