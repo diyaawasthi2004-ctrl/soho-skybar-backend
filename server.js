@@ -68,8 +68,8 @@ app.post('/api/subscribe', async (req, res) => {
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fallback to index.html for frontend routing
-app.get('/.*/', (req, res) => {
+// Fallback to index.html for frontend routing (No quotes!)
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
