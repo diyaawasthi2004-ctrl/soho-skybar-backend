@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const Reservation = require('./models/Reservation');
 const Subscriber = require('./models/Subscriber');
@@ -26,10 +27,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // API Routes
-app.get('/', (req, res) => {
-  res.send('Soho Skybar Backend is live!');
-});
-
 app.post('/api/reservations', async (req, res) => {
   try {
     const { fullName, phone, date, timeSlot, guests, seatingZone, notes } = req.body;
@@ -68,7 +65,15 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-// Single app.listen at the bottom
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Fallback to index.html for frontend routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Single server listener at the bottom using Render's dynamic port
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
